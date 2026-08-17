@@ -35,6 +35,24 @@
   --transition-bounce: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+body.dark-mode {
+  /* Colors from Mastercard Dark Editorial System */
+  --bg-canvas: #141413;        /* Ink Black PUTTY canvas */
+  --bg-lifted: #1e1e1d;        /* Raised warm black */
+  --bg-white: #262627;         /* Charcoal card backgrounds */
+  --bg-bone: #111110;
+  
+  --border-color: rgba(243, 240, 238, 0.12); /* Cream border at 12% */
+  --border-intense: rgba(243, 240, 238, 0.25);
+  
+  --color-ink: #F3F0EE;        /* Putty Cream primary text */
+  --color-charcoal: #e5e7eb;   /* Light gray body */
+  --color-slate: #a3a3a3;      /* Slate gray */
+  --color-dust: #525252;
+  
+  --color-orange: #F37338;     /* Slightly brighter orange on dark */
+}
+
 * {
   box-sizing: border-box;
   margin: 0;

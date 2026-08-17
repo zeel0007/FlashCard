@@ -28,6 +28,25 @@ function App() {
       return {};
     }
   });
+
+  // Dark Mode State
+  const [darkMode, setDarkMode] = useState(() => {
+    try {
+      const saved = localStorage.getItem('dark-mode');
+      return saved === 'true';
+    } catch (e) {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+    localStorage.setItem('dark-mode', darkMode);
+  }, [darkMode]);
   
   // Form State (for adding/editing a card)
   const [editingCardId, setEditingCardId] = useState(null);
@@ -311,9 +330,37 @@ function App() {
           </svg>
           DSA Java Revision
         </h1>
-        <span className="badge Medium" style={{ textTransform: 'none', padding: '4px 10px', fontSize: '0.65rem' }}>
-          TUF A2Z Edition
-        </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <button 
+            onClick={() => setDarkMode(!darkMode)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'var(--color-ink)',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '6px',
+              borderRadius: '50%',
+              transition: 'var(--transition-smooth)'
+            }}
+            title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          >
+            {darkMode ? (
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" style={{ width: '20px', height: '20px' }}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m0 13.5V21M4.75 12h2.25m13.5 0h2.25M6.31 6.31l1.59 1.59m8.2 8.2 1.59 1.59M6.31 17.69l1.59-1.59m8.2-8.2 1.59-1.59M12 8.25a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5Z" />
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" style={{ width: '20px', height: '20px' }}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+              </svg>
+            )}
+          </button>
+          <span className="badge Medium" style={{ textTransform: 'none', padding: '4px 10px', fontSize: '0.65rem' }}>
+            TUF A2Z Edition
+          </span>
+        </div>
       </header>
 
       {/* OFFLINE DB WARNING */}
