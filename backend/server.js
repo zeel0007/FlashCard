@@ -6,6 +6,9 @@ import cardsRouter from './routes/cards.js';
 import Card from './models/Card.js';
 import { seedCards } from './seedData.js';
 
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 dotenv.config();
 
 const app = express();
@@ -21,6 +24,16 @@ app.use('/api/cards', cardsRouter);
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Backend server is running' });
+});
+
+// Serve frontend static assets in production
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+// Fallback route to serve React index.html for client side routing
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
 
 // Database connection & Server initialization

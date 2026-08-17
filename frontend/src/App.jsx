@@ -3,7 +3,7 @@ import Flashcard from './components/Flashcard';
 import CodeViewer from './components/CodeViewer';
 import { tufProblems } from './tufData';
 
-const API_URL = 'http://localhost:5001/api/cards';
+const API_URL = import.meta.env.PROD ? '/api/cards' : 'http://localhost:5001/api/cards';
 
 function App() {
   const [cards, setCards] = useState([]);
