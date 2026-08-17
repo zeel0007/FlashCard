@@ -1,0 +1,647 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Sofia+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
+:root {
+  /* Colors from Mastercard Brand System */
+  --bg-canvas: #F3F0EE;        /* Putty Cream page canvas */
+  --bg-lifted: #FCFBFA;        /* Lifted Cream paper surface */
+  --bg-white: #FFFFFF;         /* Floating nav and modal card sheets */
+  --bg-bone: #F4F4F4;          /* Soft bone utility alternative */
+  
+  --border-color: rgba(20, 20, 19, 0.08); /* 8% Ink Black */
+  --border-intense: rgba(20, 20, 19, 0.2);
+  
+  --color-ink: #141413;        /* Warm Ink Black primary text/button */
+  --color-charcoal: #262627;   /* Softer black */
+  --color-slate: #696969;      /* Slate Gray secondary copy */
+  --color-dust: #D1CDC7;       /* Disabled whisper gray */
+  
+  --color-orange: #CF4500;     /* Signal Orange */
+  --color-orange-light: #F37338; /* Light Signal Orange for arcs */
+  --color-clay: #9A3A0A;       /* Clay Brown deep rust links */
+  
+  --easy: #10b981;
+  --medium: #f59e0b;
+  --hard: #ef4444;
+
+  --easy-glow: rgba(16, 185, 129, 0.08);
+  --medium-glow: rgba(245, 158, 11, 0.08);
+  --hard-glow: rgba(239, 68, 68, 0.08);
+
+  --font-sans: 'Sofia Sans', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  --font-mono: 'Fira Code', monospace;
+
+  /* Mastercard Transition Timing */
+  --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --transition-bounce: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-canvas);
+  color: var(--color-ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  /* Muted warm editorial backdrop lines in signal orange at low opacity */
+  background-image: radial-gradient(circle at 10% 20%, rgba(243, 115, 56, 0.02) 0%, transparent 40%),
+                    radial-gradient(circle at 90% 80%, rgba(207, 69, 0, 0.02) 0%, transparent 40%);
+}
+
+/* Base Typography Configuration */
+h1, h2, h3, h4 {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  font-weight: 500;
+  letter-spacing: -0.02em; /* Tight negative letter-spacing (-2%) */
+  line-height: 1.2;
+}
+
+p {
+  font-family: var(--font-sans);
+  font-weight: 450; /* Mastercard's signature 450 weight for soft readability */
+  line-height: 1.45;
+  color: var(--color-charcoal);
+}
+
+/* Eyebrow label rule: dot + tracked out uppercase */
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em; /* +4% tracked out uppercase */
+  color: var(--color-slate);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.eyebrow::before {
+  content: '•';
+  color: var(--color-orange);
+  font-size: 1rem;
+}
+
+/* Mastercard Elevation Scale */
+.shadow-nav {
+  box-shadow: rgba(0, 0, 0, 0.04) 0px 4px 24px 0px;
+}
+
+.shadow-card {
+  box-shadow: rgba(0, 0, 0, 0.06) 0px 16px 40px 0px;
+}
+
+/* Layout and Mobile Container mapping */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 600px; /* Centered mobile container */
+  margin: 0 auto;
+  padding-bottom: 96px; /* generous bottom padding for navigation */
+  position: relative;
+}
+
+header {
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(243, 240, 238, 0.9);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid var(--border-color);
+}
+
+header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Floating Navigation Pill at bottom of screen */
+.bottom-nav {
+  position: fixed;
+  bottom: 24px; /* Floats above the bottom */
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 568px; /* inset slightly inside the container */
+  background: var(--bg-white);
+  border-radius: 999px; /* Floating Stadium/Pill shape */
+  border: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 8px;
+  z-index: 100;
+  box-shadow: rgba(20, 20, 19, 0.08) 0px 12px 32px 0px; /* Cushioning shadow */
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  color: var(--color-slate);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.7rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  flex: 1;
+}
+
+.nav-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.2;
+  transition: var(--transition-bounce);
+}
+
+.nav-btn.active {
+  color: var(--color-ink);
+}
+
+.nav-btn.active svg {
+  transform: scale(1.1) translateY(-2px);
+  stroke: var(--color-ink);
+  fill: rgba(20, 20, 19, 0.04);
+}
+
+/* 3D Card Flipping Container (Oversized 40px radius) */
+.flashcard-deck {
+  perspective: 1200px;
+  width: 100%;
+  padding: 16px 20px;
+  height: calc(100vh - 180px);
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.card-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+}
+
+.card-container.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 40px; /* Oversized 40px corner stadium look */
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1.5px solid var(--border-color);
+  background: var(--bg-lifted);
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 20px 48px 0px; /* soft halo spread shadow */
+}
+
+.card-front {
+  /* Front face styling */
+}
+
+.card-back {
+  /* Back face styling */
+  transform: rotateY(180deg);
+}
+
+/* Badge System - Stadium shaped tags */
+.badge {
+  padding: 6px 14px;
+  border-radius: 999px; /* full pill */
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.badge.Easy {
+  background-color: var(--easy-glow);
+  color: var(--easy);
+  border: 1.5px solid rgba(16, 185, 129, 0.2);
+}
+
+.badge.Medium {
+  background-color: var(--medium-glow);
+  color: var(--medium);
+  border: 1.5px solid rgba(245, 158, 11, 0.2);
+}
+
+.badge.Hard {
+  background-color: var(--hard-glow);
+  color: var(--hard);
+  border: 1.5px solid rgba(239, 68, 68, 0.2);
+}
+
+/* Code Syntax Wrapper (stadium corners 20px) */
+.code-wrapper {
+  margin-top: 16px;
+  flex-grow: 1;
+  overflow: hidden;
+  position: relative;
+  border-radius: 20px; /* Mastercard CTA radius */
+  background: #141413; /* Ink Black background for syntax contrast */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.code-container {
+  height: 100%;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  padding: 16px;
+  color: #F3F0EE; /* Canvas cream code text */
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* Hide scrollbars for codes */
+.code-container::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.code-container::-webkit-scrollbar-thumb {
+  background: rgba(243, 240, 238, 0.2);
+  border-radius: 2px;
+}
+
+/* Swipe Indicator overlay overlays for UX */
+.swipe-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  font-size: 2.2rem;
+  font-weight: 700;
+  border-radius: 40px;
+}
+
+.swipe-overlay.mastered {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--easy);
+  border: 3px solid var(--easy);
+}
+
+.swipe-overlay.review {
+  background: rgba(207, 69, 0, 0.1);
+  color: var(--color-orange);
+  border: 3px solid var(--color-orange);
+}
+
+/* Mastercard Buttons System */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-radius: 20px; /* Signature 20px button radius */
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: var(--transition-bounce);
+  border: 1.5px solid transparent;
+}
+
+/* Primary - Solid Ink Black Pill */
+.btn-primary {
+  background: var(--color-ink);
+  color: var(--bg-canvas);
+  border-color: var(--color-ink);
+}
+
+.btn-primary:active {
+  transform: scale(0.96);
+}
+
+/* Secondary - Outlined Pill on White */
+.btn-secondary {
+  background: var(--bg-white);
+  color: var(--color-ink);
+  border-color: var(--border-intense);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-canvas);
+}
+
+.action-bar {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  width: 100%;
+}
+
+/* Dynamic pill options on flipside */
+.action-btn {
+  flex: 1;
+  padding: 8px;
+  border-radius: 20px; /* button radius */
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: var(--transition-bounce);
+}
+
+.action-btn.btn-learn {
+  background: var(--bg-white);
+  color: var(--color-slate);
+  border-color: var(--border-color);
+}
+
+.action-btn.btn-review {
+  background: var(--bg-white);
+  color: var(--color-orange);
+  border-color: var(--color-orange);
+}
+
+.action-btn.btn-mastered {
+  background: var(--color-ink);
+  color: var(--bg-white);
+  border-color: var(--color-ink);
+}
+
+.action-btn:active {
+  transform: scale(0.96);
+}
+
+/* Forms input fields styling (20px border radius) */
+.form-group {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-slate);
+}
+
+.form-input, .form-textarea, .form-select {
+  background: var(--bg-white);
+  border: 1.5px solid var(--border-color);
+  border-radius: 20px; /* signature radius */
+  padding: 14px 18px;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  transition: var(--transition-smooth);
+}
+
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  outline: none;
+  border-color: var(--color-ink);
+}
+
+.form-textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.form-textarea.code-editor {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  min-height: 200px;
+  background: #141413;
+  color: #F3F0EE;
+  border-color: var(--color-ink);
+}
+
+/* Statistics cards on Dashboard */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  padding: 24px;
+  border-radius: 40px; /* oversized radius for sections */
+  background: var(--bg-lifted);
+  border: 1.5px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-value {
+  font-size: 2.2rem;
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-slate);
+}
+
+/* Progress ring / bar layout */
+.progress-ring-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  border-radius: 40px; /* oversized corners */
+  background: var(--bg-white);
+  border: 1.5px solid var(--border-color);
+  margin-bottom: 24px;
+}
+
+/* Category lists */
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.category-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 24px;
+  background: var(--bg-lifted);
+  border-radius: 20px;
+  border: 1.5px solid var(--border-color);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.category-item:hover {
+  background: var(--bg-white);
+  transform: translateY(-1px);
+  border-color: var(--border-intense);
+}
+
+.category-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.category-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-orange); /* Accent dots */
+}
+
+.category-count {
+  font-size: 0.8rem;
+  color: var(--color-slate);
+  background: var(--bg-canvas);
+  padding: 3px 10px;
+  border-radius: 999px; /* pill badge */
+  font-weight: 600;
+}
+
+/* Panels */
+.panel {
+  padding: 24px;
+  animation: fadeIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Syntax Highlighting overrides */
+.code-kw {
+  color: #f472b6; /* Hot Pink */
+  font-weight: 600;
+}
+.code-str {
+  color: #34d399; /* Emerald/Green */
+}
+.code-num {
+  color: #fb923c; /* Bright Orange */
+}
+.code-comment {
+  color: #6b7280; /* Muted Slate Gray */
+  font-style: italic;
+}
+.code-builtin {
+  color: #38bdf8; /* Sky Blue */
+  font-weight: 500;
+}
+
+/* CodeViewer Specific modifications */
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.code-lang {
+  font-size: 0.7rem;
+  color: var(--color-dust);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.code-copy-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-dust);
+  font-size: 0.7rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  transition: var(--transition-smooth);
+}
+.code-copy-btn:hover {
+  color: var(--bg-white);
+  background: rgba(255, 255, 255, 0.05);
+}
+.code-body-wrapper {
+  display: flex;
+  height: calc(100% - 34px);
+  overflow: hidden;
+}
+.code-line-numbers {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 8px 16px 16px;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.1);
+  color: rgba(255, 255, 255, 0.15);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  text-align: right;
+  user-select: none;
+  min-width: 38px;
+}
+.code-container {
+  flex-grow: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+}

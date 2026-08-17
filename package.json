@@ -1,0 +1,15 @@
+{
+  "name": "dsa-flashcard-revision",
+  "version": "1.0.0",
+  "description": "DSA Revision Web Application using MERN Stack",
+  "main": "backend/server.js",
+  "scripts": {
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd frontend && npm run dev",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
