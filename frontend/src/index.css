@@ -53,6 +53,10 @@ body.dark-mode {
   --color-orange: #F37338;     /* Slightly brighter orange on dark */
 }
 
+html {
+  font-size: 17px;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
